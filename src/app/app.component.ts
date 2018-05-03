@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { WebsocketService } from './service/web-socket.service';
-import { Observable, Subject } from 'rxjs/Rx';
-import { Configuration } from './configuration/configuration';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,20 +9,8 @@ import { Configuration } from './configuration/configuration';
 })
 
 export class AppComponent {
-  title = 'app';
-
-  public messages: Subject<Message>;
-
-  constructor(private ws: WebsocketService) {
-    this.messages = <Subject<Message>>ws
-      .connect(Configuration.SERVER_URL)
-      .map((response: MessageEvent): Message => {
-        const data = JSON.parse(response.data);
-        return {
-          author: data.author,
-          message: data.message
-        };
-      });
+  constructor(private ws: WebsocketService, private router: Router) {
+    ws.initializeWebSocketConnection();
   }
 }
 

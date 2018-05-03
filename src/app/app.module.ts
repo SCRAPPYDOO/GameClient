@@ -2,14 +2,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { WebsocketService } from './service/web-socket.service';
-
+import { WarcabyComponent } from './pages/warcaby/warcaby.component';
+import { GamesComponent } from './pages/games/games.component';
+import { routing } from './app.routes';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WarcabyComponent,
+    GamesComponent,
+    ChatComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    routing,
   ],
   providers: [WebsocketService],
   bootstrap: [AppComponent]

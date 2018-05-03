@@ -1,55 +1,37 @@
 import { Injectable } from '@angular/core';
-import * as Rx from 'rxjs/Rx';
+import { Configuration } from '../configuration/configuration';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
 
 @Injectable()
 export class WebsocketService {
-  private stompClient;
+  private _stompClient;
 
   constructor() {
-    //this.initializeWebSocketConnection();
   }
 
-/*  private initializeWebSocketConnection(){
-    //const ws = new SockJS(Configuration.SERVER_URL);
-    this.stompClient = Client.over(Configuration.SERVER_URL);
+  public initializeWebSocketConnection(){
+    const ws = new SockJS(Configuration.SERVER_URL);
+    this._stompClient = Stomp.over(ws);
     const that = this;
-    this.stompClient.connect({}, function(frame) {
-      that.stompClient.subscribe('/chat', (message) => {
+    this._stompClient.connect({}, function(frame) {
+      /*that._stompClient.subscribe('/chat', (message) => {
         if (message.body) {
-          console.log(message.body);
+          console.log('Message body ' + message.body);
         }
-      });
+      });*/
     });
-  }*/
-
-  private subject: Rx.Subject<MessageEvent>;
-
-  public connect(url): Rx.Subject<MessageEvent> {
-    if (!this.subject) {
-      this.subject = this.create(url);
-      console.log("Successfully connected: " + url);
-    }
-    return this.subject;
   }
 
-  private create(url): Rx.Subject<MessageEvent> {
-    let ws = new WebSocket(url);
-
-    let observable = Rx.Observable.create(
-      (obs: Rx.Observer<MessageEvent>) => {
-        ws.onmessage = obs.next.bind(obs);
-        ws.onerror = obs.error.bind(obs);
-        ws.onclose = obs.complete.bind(obs);
-        return ws.close.bind(ws);
-      })
-    let observer = {
-      next: (data: Object) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify(data));
-        }
-      }
-    }
-    return Rx.Subject.create(observer, observable);
+  get stompClient() {
+    return this._stompClient;
   }
 
+  public sendChatMessage(message: any, url: string) {
+    this.sendMessage(message, Configuration.CHAT_URL + url);
+  }
+
+  public sendMessage(message: any, url: string) {
+    this._stompClient.send(url , {}, message);
+  }
 }
