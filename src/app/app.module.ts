@@ -6,13 +6,15 @@ import { WarcabyComponent } from './pages/warcaby/warcaby.component';
 import { GamesComponent } from './pages/games/games.component';
 import { routing } from './app.routes';
 import { ChatComponent } from './components/chat/chat.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WarcabyComponent,
     GamesComponent,
-    ChatComponent
+    ChatComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

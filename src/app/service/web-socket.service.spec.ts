@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { WebSocketService } from './web-socket.service';
+import { WebsocketService } from './web-socket.service';
 
 describe('WebSocketService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WebSocketService]
+      providers: [WebsocketService]
     });
   });
 
-  it('should be created', inject([WebSocketService], (service: WebSocketService) => {
+  it('should be created', inject([WebsocketService], (service: WebsocketService) => {
     expect(service).toBeTruthy();
   }));
 });
